@@ -15,32 +15,44 @@ if ! az account show >/dev/null 2>&1; then
 fi
 
 # Request Azure Entra ID App Registration Display Name
+while true; do
 read -p "🔗 New Azure Entra ID App Registration Display Name: " APP_REG_NAME
-if [ -z "$APP_REG_NAME" ]; then
-    echo "❌ Error! App registration name cannot be empty!"
-    exit 1
+if [ -n "$APP_REG_NAME" ]; then
+    break
+else
+echo "❌ Error! App registration name cannot be empty!"
 fi
+done
 
 # Request Azure Federated Credential Name
+while true; do
 read -p "🔗 New Azure Federated Credential Name: " FEDERATED_NAME
-if [ -z "$FEDERATED_NAME" ]; then
+if [ -n "$FEDERATED_NAME" ]; then
+    break
+else
     echo "❌ Error! Federated Credential Name cannot be empty!"
-    exit 1
 fi
+done
 
 # Request GitHub Repo
+while true; do
 read -p "📦 Your GitHub Repo (username/repository): " GITHUB_REPO
-if ! echo "$GITHUB_REPO" | grep -Eq '^[^/]+/[^/]+$'; then
+if [ -z "$GITHUB_REPO" ] || ! echo "$GITHUB_REPO" | grep -Eq '^[^/]+/[^/]+$'; then
     echo "❌ Invalid format. Please use 'username/repository'"
-    exit 1
+else
+    break
 fi
+done
 
 # Request Github Repo Branch to follow
+while true; do
 read -p "📦 Your GitHub Repo Branch to follow (for eg. main): " GITHUB_BRANCH
-if [ -z "$GITHUB_BRANCH" ]; then
+if [ -n "$GITHUB_BRANCH" ]; then
+    break
+else
     echo "❌ Error! You must give a branch!"
-    exit 1
 fi
+done
 
 # Validate Entra ID App Registration Display Name
 echo "🔍 Validating your Entra ID App Registration Display Name..."
