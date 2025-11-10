@@ -1,9 +1,6 @@
 terraform {
   backend "azurerm" {
-    resource_group_name = "tfstate_remotebackend"
-    storage_account_name = "tfstate0m9apovthi"
-    container_name = "tfstate"
-    key = "terraform-infra.tfstate"
+    use_oidc= true
   }
   required_version = ">= 1.13.5"
   required_providers {
@@ -16,4 +13,5 @@ terraform {
 
 provider "azurerm" {
   features {}
+  use_oidc = true
 }
