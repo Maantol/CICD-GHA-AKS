@@ -9,8 +9,3 @@ variable "base_name" {
   default     = "webapp"
   description = "Base name for all resources"
 }
-
-variable "network_address_space" {
-  type    = list(string)
-  default = ["10.0.0.0/16"]
-}

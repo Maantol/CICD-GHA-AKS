@@ -7,7 +7,7 @@ data "azurerm_kubernetes_cluster" "k8s" {
 resource "azurecaf_name" "AKS" {
   name          = var.base_name
   resource_type = "azurerm_kubernetes_cluster"
-  suffixes      = ["prod", "var.azure_location"]
+  suffixes      = ["prod", "north-europe"]
   clean_input   = true
 }
 
