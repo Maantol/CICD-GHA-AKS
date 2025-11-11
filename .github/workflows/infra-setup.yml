@@ -28,6 +28,8 @@ jobs:
       run:
         shell: bash
         working-directory: ./infra-setup
+    outputs:
+        tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
 
     steps:
       - uses: actions/checkout@v4
