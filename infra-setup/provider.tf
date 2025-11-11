@@ -1,5 +1,6 @@
 terraform {
   backend "azurerm" {
+    use_oidc = true
   }
   required_version = ">= 1.13.5"
   required_providers {
@@ -23,4 +24,5 @@ provider "azurerm" {
   features {}
   use_oidc = true
 }
+
 provider "azurecaf" {}
