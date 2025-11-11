@@ -1,0 +1,42 @@
+name: Terraform Destroy
+
+on:
+  workflow_dispatch:
+
+permissions:
+    contents: read
+    id-token: write
+    pull-requests: write
+
+env:
+  TF_VAR_rg_name: ${{ secrets.TF_VAR_RG_NAME }}
+  TF_VAR_storage_name: ${{ secrets.TF_VAR_STORAGE_NAME }}
+  TF_VAR_container_name: ${{ secrets.TF_VAR_CONTAINER_NAME }}
+  TF_VAR_tfstate_key: ${{ secrets.TF_VAR_TFSTATE_INFRA_KEY }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+jobs:
+  Destroy:
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        working-directory: ./infra-setup
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3.1.2
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${TF_VAR_rg_name}" \
+            -backend-config="storage_account_name=${TF_VAR_storage_name}" \
+            -backend-config="container_name=${TF_VAR_container_name}" \
+            -backend-config="key=${TF_VAR_tfstate_key}"
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
