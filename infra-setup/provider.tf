@@ -1,6 +1,6 @@
 terraform {
   backend "azurerm" {
-    use_oidc= true
+    use_oidc = true
   }
   required_version = ">= 1.13.5"
   required_providers {
