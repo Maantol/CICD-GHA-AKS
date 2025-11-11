@@ -1,4 +1,4 @@
 resource "azurerm_resource_group" "testi" {
-  name     = "Testi-RG4"
+  name     = "Testi-RG3"
   location = "North Europe"
 }
