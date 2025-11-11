@@ -18,9 +18,9 @@ env:
   TF_VAR_storage_name: ${{ secrets.TF_VAR_STORAGE_NAME }}
   TF_VAR_container_name: ${{ secrets.TF_VAR_CONTAINER_NAME }}
   TF_VAR_tfstate_key: ${{ secrets.TF_VAR_TFSTATE_INFRA_KEY }}
-  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
 jobs:
   plan:
