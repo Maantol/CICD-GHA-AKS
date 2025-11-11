@@ -95,10 +95,26 @@ az role assignment create --assignee "$APP_ID" --role "Contributor" --scope "$SU
     exit 1
 }
 
+# Assign Storage Blob Contributor role
+echo "⏳ Assigning 'Storage Blob Data Contributor' role to Service Principal..."
+az role assignment create --assignee "$APP_ID" --role "Storage Blob Data Contributor" --scope "$SUBSCRIPTION_SCOPE" -o none || {
+    echo "❌ Failed to assign 'Storage Blob Data Contributor' role!"
+    exit 1
+}
+
 # Validate role assignment
-ROLE_CHECK=$(az role assignment list --assignee "$APP_ID" --role "Contributor" --scope "$SUBSCRIPTION_SCOPE" --query "[].roleDefinitionName" -o tsv)
-if [ "$ROLE_CHECK" = "Contributor" ]; then
+CONTR_ROLE_CHECK=$(az role assignment list --assignee "$APP_ID" --role "Contributor" --scope "$SUBSCRIPTION_SCOPE" --query "[].roleDefinitionName" -o tsv)
+if [ "$CONTR_ROLE_CHECK" = "Contributor" ]; then
     echo "✅ 'Contributor' role successfully assigned"
+else
+    echo "❌ Role assignment verification failed!"
+    exit 1
+fi
+
+# Validate role assignment
+BLOB_CONTR_ROLE_CHECK=$(az role assignment list --assignee "$APP_ID" --role "Storage Blob Data Contributor" --scope "$SUBSCRIPTION_SCOPE" --query "[].roleDefinitionName" -o tsv)
+if [ "$BLOB_CONTR_ROLE_CHECK" = "Storage Blob Data Contributor" ]; then
+    echo "✅ 'Storage Blob Data Contributor' role successfully assigned"
 else
     echo "❌ Role assignment verification failed!"
     exit 1

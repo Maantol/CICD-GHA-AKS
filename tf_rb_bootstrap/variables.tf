@@ -42,3 +42,41 @@ variable "azure_storage_container_access_type" {
   type        = string
   default     = "private"
 }
+
+variable "azure_app_name" {
+  description = "Azure App Registration Display Name"
+  type        = string
+}
+
+variable "fd_credential_name" {
+  description = "Federated Credential name"
+  type        = string
+}
+
+variable "gh_owner" {
+  description = "GitHub Owner/Organization name"
+  type        = string
+}
+
+variable "gh_repository" {
+  description = "GitHub Repository name"
+  type        = string
+}
+
+variable "gh_environment" {
+  description = "GitHub Environment"
+  type        = string
+  default     = "production"
+}
+
+variable "gh_issuer" {
+  description = "GitHub Issuer URL"
+  type        = string
+  default     = "https://token.actions.githubusercontent.com"
+}
+
+variable "gh_audiences" {
+  description = "AzureAD Audiences API"
+  type        = list(string)
+  default     = ["api://AzureADTokenExchange"]
+}

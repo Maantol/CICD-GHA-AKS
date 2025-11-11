@@ -51,6 +51,17 @@ while true; do
     esac
 done
 
+SP_ID=$(az ad sp list --filter "appId eq '$APP_ID'" --query "[0].id" -o tsv)
+
+if [ -n "$SP_ID" ]; then
+    echo "🗑️ Deleting associated 'Contributor' Service Principal..."
+    az ad sp delete --id "$SP_ID"
+    echo "✅ Service Principal deleted successfully!"
+else
+    echo "ℹ️ No associated Service Principal found."
+fi
+
+
 #Delete Azure Entra ID App Registration 
 az ad app delete --id "$APP_ID"
 echo "✅ App Registration '$APP_REG_NAME' successfully deleted!"

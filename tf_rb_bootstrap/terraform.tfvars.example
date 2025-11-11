@@ -1,0 +1,10 @@
+azure_subscription_id = <YOUR SUBSCRIPTION ID>
+azure_resource_group  = <RESOURCE GROUP NAME>
+azure_location        = <REGION>
+
+azure_app_name = <APP REGISTRATION DISPLAY NAME>
+
+fd_credential_name = <FD CREDENTIAL NAME>
+
+gh_owner = <GITHUB ORGANIZATION>
+gh_repository = <GITHUB REPOSITORY>
