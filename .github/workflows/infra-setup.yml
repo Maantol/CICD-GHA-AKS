@@ -73,6 +73,11 @@ jobs:
           name: tfplan
           path: ./infra-setup/tfplan
 
+      - name: Debug plan context
+        run: |
+          echo "GITHUB_REF='${GITHUB_REF}'"
+          echo "plan exitcode='${{ steps.tf_plan.outputs.exitcode }}'"
+
   terraform-apply:
     name: "Terraform Apply"
     needs: [plan]
