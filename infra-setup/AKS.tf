@@ -46,7 +46,7 @@ provider "helm" {
   }
 }
 
-resource "helm_release" "kube-prometheus-stack" {
+resource "helm_release" "kube-prom-grafana-stack" {
   name             = "kube-prometheus-stack"
   repository       = "https://prometheus-community.github.io/helm-charts"
   chart            = "kube-prometheus-stack"
@@ -76,9 +76,9 @@ resource "helm_release" "nginx_ingress" {
     { name = "controller.podAnnotations.prometheus\\.io/scrape", value = "true" },
     { name = "controller.podAnnotations.prometheus\\.io/port", value = "10254" },
     { name = "controller.metrics.enabled", value = "true" },
-    { name =  "controller.metrics.serviceMonitor.enabled", value = "true" },
-    { name =  "controller.metrics.serviceMonitor.additionalLabels.release", value = "prometheus" },
+    { name = "controller.metrics.serviceMonitor.enabled", value = "true" },
+    { name = "controller.metrics.serviceMonitor.additionalLabels.release", value = "prometheus" },
     { name = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-load-balancer-health-probe-request-path", value = "/healthz" }
   ]
-  depends_on = [helm_release.kube-prometheus-stack]
+  depends_on = [helm_release.kube-prom-grafana-stack]
 }
