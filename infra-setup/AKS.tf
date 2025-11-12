@@ -46,17 +46,18 @@ provider "helm" {
   }
 }
 
-resource "helm_release" "prometheus" {
-  name             = "prometheus"
+resource "helm_release" "kube-prometheus-stack" {
+  name             = "kube-prometheus-stack"
   repository       = "https://prometheus-community.github.io/helm-charts"
-  chart            = "prometheus"
-  version          = "27.45.0"
+  chart            = "kube-prometheus-stack"
+  version          = "79.5.0"
   create_namespace = true
   namespace        = "prometheus"
 
   set = [
     { name = "prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues", value = "false" },
     { name = "prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues", value = "false" },
+    { name = "grafana.enabled", value = "true" }
   ]
 }
 
@@ -66,15 +67,17 @@ resource "helm_release" "nginx_ingress" {
   chart            = "ingress-nginx"
   version          = "4.14.0"
   create_namespace = true
-  namespace        = "ingress-basic"
+  namespace        = "ingress-nginx"
 
   set = [
     { name = "controller.replicaCount", value = "3" },
     { name = "controller.nodeSelector.kubernetes\\.io/os", value = "linux" },
     { name = "defaultBackend.nodeSelector.kubernetes\\.io/os", value = "linux" },
+    { name = "controller.podAnnotations.prometheus\\.io/scrape", value = "true" },
+    { name = "controller.podAnnotations.prometheus\\.io/port", value = "10254" },
     { name = "controller.metrics.enabled", value = "true" },
-    { name = "controller.metrics.serviceMonitor.enabled", value = "true" },
-    { name = "controller.metrics.serviceMonitor.additionalLabels.release", value = "prometheus" },
+    { name =  "controller.metrics.serviceMonitor.enabled", value = "true" },
+    { name =  "controller.metrics.serviceMonitor.additionalLabels.release", value = "prometheus" },
     { name = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-load-balancer-health-probe-request-path", value = "/healthz" }
   ]
   depends_on = [helm_release.prometheus]
