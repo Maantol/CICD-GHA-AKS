@@ -46,18 +46,35 @@ provider "helm" {
   }
 }
 
-resource "helm_release" "argocd" {
-  name             = "argo-cd"
-  repository       = "https://argoproj.github.io/argo-helm"
-  chart            = "argo-cd"
-  version          = "9.0.4"
+resource "helm_release" "prometheus" {
+  name             = "prometheus"
+  repository       = "https://prometheus-community.github.io/helm-charts"
+  chart            = "prometheus"
+  version          = "27.45.0"
   create_namespace = true
-  namespace        = "argocd"
+  namespace        = "prometheus"
 
   set = [
-    {
-      name  = "server.service.type"
-      value = "LoadBalancer"
-    }
+    { name = "prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues", value = "false" },
+    { name = "prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues", value = "false" },
+  ]
+}
+
+resource "helm_release" "nginx_ingress" {
+  name             = "ingress-nginx"
+  repository       = "https://kubernetes.github.io/ingress-nginx"
+  chart            = "ingress-nginx"
+  version          = "4.14.0"
+  create_namespace = true
+  namespace        = "ingress-basic"
+
+  set = [
+    { name = "controller.replicaCount", value = "3" },
+    { name = "controller.nodeSelector.kubernetes\\.io/os", value = "linux" },
+    { name = "defaultBackend.nodeSelector.kubernetes\\.io/os", value = "linux" },
+    { name = "controller.metrics.enabled", value = "true" },
+    { name = "controller.metrics.serviceMonitor.enabled", value = "true" },
+    { name = "controller.metrics.serviceMonitor.additionalLabels.release", value = "prometheus" },
+    { name = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-load-balancer-health-probe-request-path", value = "/healthz" }
   ]
 }
