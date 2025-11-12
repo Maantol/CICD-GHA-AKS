@@ -80,5 +80,5 @@ resource "helm_release" "nginx_ingress" {
     { name =  "controller.metrics.serviceMonitor.additionalLabels.release", value = "prometheus" },
     { name = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-load-balancer-health-probe-request-path", value = "/healthz" }
   ]
-  depends_on = [helm_release.prometheus]
+  depends_on = [helm_release.kube-prometheus-stack]
 }
